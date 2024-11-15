@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Server_Socket.cpp                                  :+:      :+:    :+:   */
+/*   ServerSocket.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Server_Socket.hpp"
+#include "ServerSocket.hpp"
 
-Server_Socket::Server_Socket(const short port, Epoll_Wrapper& epoll) : Socket(epoll)
+ServerSocket::ServerSocket(const short port, Epoll_Wrapper& epoll) : Socket(epoll)
 {
 	_fd = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);
 	if (_fd < 0)
@@ -32,6 +32,6 @@ Server_Socket::Server_Socket(const short port, Epoll_Wrapper& epoll) : Socket(ep
 	register_to_epoll(EPOLLIN);
 }
 
-Server_Socket::~Server_Socket()
+ServerSocket::~ServerSocket()
 {
 }

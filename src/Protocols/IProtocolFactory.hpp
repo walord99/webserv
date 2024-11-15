@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   HttpProtocol.hpp                                     :+:      :+:    :+:   */
+/*   IProtocolFactory.hpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/06 17:28:42 by bplante           #+#    #+#             */
-/*   Updated: 2024/11/06 18:18:13 by bplante          ###   ########.fr       */
+/*   Created: 2024/11/13 20:14:33 by bplante           #+#    #+#             */
+/*   Updated: 2024/11/13 23:26:04 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "ProtocolInterface.hpp"
-#include "map"
+#include "IProtocol.hpp"
 
-class HttpProtocol : public ProtocolInterface
+class IProtocolFactory
 {
-	public:
-		HttpProtocol();
-		HttpProtocol(const  HttpProtocol& other);
-		~HttpProtocol(void);
-		HttpProtocol& operator=(const HttpProtocol& other);
-		
-		std::string *processInput(std::queue<std::string> &input);
+	private:
 
-	private: 
-		bool isMessageComplete(std::queue<std::string> &input);
+	public:
+		IProtocolFactory(void);
+		IProtocolFactory(const  IProtocolFactory& other);
+		virtual ~IProtocolFactory(void);
+		IProtocolFactory& operator=(const IProtocolFactory& other);
+		virtual IProtocol *createNew(void) = 0;
 };

@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ProtocolInterface.cpp                              :+:      :+:    :+:   */
+/*   IProtocolFactory.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/06 17:32:05 by bplante           #+#    #+#             */
-/*   Updated: 2024/11/06 20:08:36 by bplante          ###   ########.fr       */
+/*   Created: 2024/11/13 20:15:41 by bplante           #+#    #+#             */
+/*   Updated: 2024/11/13 23:27:13 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ProtocolInterface.hpp"
+#include "IProtocolFactory.hpp"
 
-ProtocolInterface::ProtocolInterface(void)
+IProtocolFactory::IProtocolFactory(void)
 {
 }
 
-ProtocolInterface::~ProtocolInterface(void)
+IProtocolFactory::~IProtocolFactory(void)
 {
 }
 
-ProtocolInterface::ProtocolInterface(const ProtocolInterface &other)
+IProtocolFactory::IProtocolFactory(const IProtocolFactory &other)
 {
 	*this = other;
 }
 
-ProtocolInterface &ProtocolInterface::operator=(const ProtocolInterface &other)
+IProtocolFactory &IProtocolFactory::operator=(const IProtocolFactory &other)
 {
 	if (this != &other)
 	{

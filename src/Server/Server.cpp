@@ -6,21 +6,21 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:31:09 by bplante           #+#    #+#             */
-/*   Updated: 2024/11/06 20:42:36 by bplante          ###   ########.fr       */
+/*   Updated: 2024/11/15 01:25:32 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-Server::Server(std::map<const short, ProtocolInterface *> &port_proto_map)
+Server::Server(std::map<const short, IProtocolFactory *> &port_proto_map)
 {
 	if (port_proto_map.size() == 0)
 		throw Server_Exception("No listed port to listen to\n");
 	_epoll = new Epoll_Wrapper();
-	for (std::map<const short, ProtocolInterface *>::const_iterator i = port_proto_map.begin(); i != port_proto_map.end(); i++)
+	for (std::map<const short, IProtocolFactory *>::const_iterator i = port_proto_map.begin(); i != port_proto_map.end(); i++)
 	{
-		Server_Socket *sock = new Server_Socket(i->first, *_epoll);
-		ProtocolInterface *proto = i->second;
+		ServerSocket *sock = new ServerSocket(i->first, *_epoll);
+		IProtocolFactory *proto = i->second;
 		_sock_map.insert(std::make_pair(sock, proto));
 	}
 }
@@ -38,12 +38,12 @@ void Server::run(void)
 			for (ptr = events.begin(); ptr != events.end(); ptr++)
 			{
 				bool is_in = false;
-				for (std::map<Server_Socket *, ProtocolInterface *>::iterator i = _sock_map.begin(); i != _sock_map.end(); i++)
+				for (std::map<ServerSocket *, IProtocolFactory *>::iterator i = _sock_map.begin(); i != _sock_map.end(); i++)
 				{
-					Server_Socket *sock = i->first;
+					ServerSocket *sock = i->first;
 					if (ptr->data.ptr == sock)
 					{
-						Connection *connection = new Connection(*sock, *_epoll, i->second);
+						Connection *connection = new Connection(*sock, *_epoll, i->second->createNew());
 						_connections.push_back(connection);
 						std::cout << "accepted connection on port " << sock->getPort() << "\n";
 						is_in = true;
@@ -57,10 +57,8 @@ void Server::run(void)
 					Connection *con = const_cast<Connection *>(static_cast<const Connection *>(ptr->data.ptr));
 					try
 					{
-						std::string *msg = con->recieve();
-						std::cout << *msg;
-						delete msg;
-						con->send_msg("HTTP/1.1 404 Not Found\r\nContent-Length: 0\r\n\r\n");
+						con->recieve();
+						con->sendData();
 					}
 					catch (const std::exception &e)
 					{
@@ -74,6 +72,8 @@ void Server::run(void)
 								break;
 							}
 						}
+						if (_connections.size() == 0)
+							loop = false;
 					}
 					// {
 					// 	std::string msg = cli->recieve();
@@ -100,7 +100,7 @@ Server::~Server(void)
 {
 	for (std::list<Connection *>::iterator i = _connections.begin(); i != _connections.end(); i++)
 		delete *i;
-	for (std::map<Server_Socket *, ProtocolInterface *>::iterator i = _sock_map.begin(); i != _sock_map.end(); i++)
+	for (std::map<ServerSocket *, IProtocolFactory *>::iterator i = _sock_map.begin(); i != _sock_map.end(); i++)
 	{
 		delete i->first;
 	}

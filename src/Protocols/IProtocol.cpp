@@ -1,29 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ProtocolInterface.hpp                              :+:      :+:    :+:   */
+/*   IProtocol.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/06 12:45:30 by bplante           #+#    #+#             */
-/*   Updated: 2024/11/06 20:08:47 by bplante          ###   ########.fr       */
+/*   Created: 2024/11/06 17:32:05 by bplante           #+#    #+#             */
+/*   Updated: 2024/11/06 20:08:36 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#include "IProtocol.hpp"
 
-#include "global.hpp"
-#include "queue"
-
-class ProtocolInterface
+IProtocol::IProtocol(void)
 {
-	private:
+}
 
-	public:
-		ProtocolInterface(void);		
-		ProtocolInterface(const ProtocolInterface &other);
-		virtual ~ProtocolInterface(void);
-		ProtocolInterface& operator=(const ProtocolInterface& other);
-		virtual std::string *processInput(std::queue<std::string> &input) = 0;
+IProtocol::~IProtocol(void)
+{
+}
 
-};
+IProtocol::IProtocol(const IProtocol &other)
+{
+	*this = other;
+}
+
+IProtocol &IProtocol::operator=(const IProtocol &other)
+{
+	if (this != &other)
+	{
+		
+	}
+	return *this;
+}
+

@@ -1,35 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Server_Socket.hpp                                  :+:      :+:    :+:   */
+/*   Socket.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/04 16:51:50 by bplante           #+#    #+#             */
-/*   Updated: 2024/11/06 18:57:27 by bplante          ###   ########.fr       */
+/*   Created: 2024/11/04 16:52:04 by bplante           #+#    #+#             */
+/*   Updated: 2024/11/15 00:42:34 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "Socket.hpp"
 #include "global.hpp"
+#include "EpollWrapper.hpp"
 
-class Server_Socket : public Socket
+class Epoll_Wrapper;
+
+class Socket
 {
-public:
-	using Socket::getFD;
-	Server_Socket(const short port, Epoll_Wrapper& epoll);
-	~Server_Socket();
+protected:
+	short _port;
+	int _fd;
+	Epoll_Wrapper &_epoll;
+	struct sockaddr_in _addr;
+	
 
-	class Server_Exception : std::exception{
-		private:
-			std::string _msg;
-		public:
-			Server_Exception(const std::string &msg) : _msg(msg) {};
-			const char* what(void) const throw() {
-				return _msg.c_str();
-			};
-			virtual ~Server_Exception(void) throw() {};
-	};
+private:
+	bool _is_watched;
+
+public:
+	Socket(Epoll_Wrapper& epoll);
+	virtual ~Socket();
+	int getFD(void) const;
+	short getPort(void) const;
+
+protected:
+	void register_to_epoll(int events);
 };

@@ -12,7 +12,7 @@
 
 #include "HttpProtocol.hpp"
 
-HttpProtocol::HttpProtocol(void) : ProtocolInterface()
+HttpProtocol::HttpProtocol(void) : IProtocol()
 {
 }
 
@@ -20,7 +20,7 @@ HttpProtocol::~HttpProtocol(void)
 {
 }
 
-HttpProtocol::HttpProtocol(const HttpProtocol &other) : ProtocolInterface()
+HttpProtocol::HttpProtocol(const HttpProtocol &other) : IProtocol()
 {
 	*this = other;
 }
@@ -29,18 +29,17 @@ HttpProtocol &HttpProtocol::operator=(const HttpProtocol &other)
 {
 	if (this != &other)
 	{
-		
 	}
 	return *this;
 }
 
-std::string *HttpProtocol::processInput(std::queue<std::string> &input)
+IProtocol::processAction HttpProtocol::processInput(std::string &input, std::string **output_loc)
 {
 	(void)input;
 	// int method;
 	// int major_version;
 	// int minor_version;
 	// std::map<std::string, std::string> header_fields;
-	std::string *ret = new std::string("HTTP/1.1 404 Not Found\r\nContent-Length: 0\r\n\r\n");
-	return ret;
+	*output_loc = new std::string("HTTP/1.1 404 Not Found\r\nContent-Length: 4\r\n\r\ncum\n\r\n\r\n");
+	return IProtocol::OUTPUT;
 }

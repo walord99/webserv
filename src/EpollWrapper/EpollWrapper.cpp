@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Epoll_Wrapper.cpp                                  :+:      :+:    :+:   */
+/*   EpollWrapper.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:31:18 by bplante           #+#    #+#             */
-/*   Updated: 2024/11/06 17:20:26 by bplante          ###   ########.fr       */
+/*   Updated: 2024/11/15 00:39:32 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Epoll_Wrapper.hpp"
+#include "EpollWrapper.hpp"
 
 Epoll_Wrapper::Epoll_Wrapper(void) : _watch_count(0)
 {

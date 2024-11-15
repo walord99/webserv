@@ -1,47 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Epoll_Wrapper.hpp                                  :+:      :+:    :+:   */
+/*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/04 16:51:19 by bplante           #+#    #+#             */
-/*   Updated: 2024/11/04 20:25:15 by bplante          ###   ########.fr       */
+/*   Created: 2024/11/04 16:01:06 by bplante           #+#    #+#             */
+/*   Updated: 2024/11/15 01:26:58 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "global.hpp"
-#include "Socket.hpp"
+#include "EpollWrapper.hpp"
+#include "ServerSocket.hpp"
+#include "Connection.hpp"
+#include "IProtocol.hpp"
+#include "IProtocolFactory.hpp"
+#include "list"
+#include "map"
 
-class Socket;
-
-class Epoll_Wrapper
+class Server
 {
 private:
-	int _fd;
-	unsigned int _watch_count;
-	std::vector<struct epoll_event> _events;
+	Epoll_Wrapper *_epoll;
+	std::list<Connection *> _connections;
+	std::map<ServerSocket *, IProtocolFactory *> _sock_map;
 
 public:
-	Epoll_Wrapper(void);
-	void add(Socket &sock, int events);
-	void remove(Socket &sock);
-	const std::vector<struct epoll_event> &wait(void);
-	~Epoll_Wrapper(void);
-
-	class Epoll_Exception : public std::exception
+	Server(std::map<const short, IProtocolFactory *> &port_proto_map);
+	void run(void);
+	~Server(void);
+	class Server_Exception : public std::exception
 	{
 	private:
 		std::string _message;
 
 	public:
-		Epoll_Exception(const std::string &msg) : _message(msg) {};
+		Server_Exception(const std::string &msg) : _message(msg) {};
 		const char *what(void) const throw()
 		{
 			return _message.c_str();
 		}
-		virtual ~Epoll_Exception(void) throw() {}
+		virtual ~Server_Exception(void) throw() {}
 	};
 };
