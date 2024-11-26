@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 16:51:15 by bplante           #+#    #+#             */
-/*   Updated: 2024/11/15 01:27:13 by bplante          ###   ########.fr       */
+/*   Updated: 2024/11/18 19:03:55 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,11 @@
 
 class Connection : public Socket
 {
-public:
+private:
 	std::queue<std::string *> _write_buffer;
+	std::queue<std::string *> _read_buffer;
 	IProtocol *_proto;
+	
 	
 public:
 	using Socket::getFD;

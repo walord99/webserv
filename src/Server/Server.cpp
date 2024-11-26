@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:31:09 by bplante           #+#    #+#             */
-/*   Updated: 2024/11/15 01:25:32 by bplante          ###   ########.fr       */
+/*   Updated: 2024/11/20 14:48:33 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,48 +52,51 @@ void Server::run(void)
 				}
 				if (is_in)
 					continue;
+				bool has_closed = false;
 				if (ptr->events & EPOLLIN)
 				{
 					Connection *con = const_cast<Connection *>(static_cast<const Connection *>(ptr->data.ptr));
 					try
 					{
-						con->recieve();
-						con->sendData();
+						if (con->recieve() == -1)
+						{
+							if (closeConnection(con) == 0)
+								has_closed = true;
+							if (_connections.size() == 0)
+								loop = false;
+						}
 					}
 					catch (const std::exception &e)
 					{
 						std::cout << "client disconnected\n";
-						for (std::list<Connection *>::iterator i = _connections.begin(); i != _connections.end(); i++)
-						{
-							if (*i == con)
-							{
-								delete *i;
-								_connections.erase(i);
-								break;
-							}
-						}
+						if (closeConnection(con) == 0)
+							has_closed = true;
 						if (_connections.size() == 0)
 							loop = false;
 					}
-					// {
-					// 	std::string msg = cli->recieve();
-					// 	_channels[0]->send_to_channel(msg);
-					// }
-					// catch (const std::exception &e)
-					// {
-					// 	for (size_t i = 0; i < _clients.size(); i++)
-					// 	{
-					// 		if (_clients[i] == cli)
-					// 		{
-					// 			_clients.erase(_clients.begin() + i);
-					// 			_channels[0]->remove_client(*cli);
-					// 		}
-					// 	}
-					// }
+				}
+				if (ptr->events & EPOLLOUT && has_closed == false)
+				{
+					Connection *con = const_cast<Connection *>(static_cast<const Connection *>(ptr->data.ptr));
+					con->sendData();
 				}
 			}
 		}
 	}
+}
+
+int Server::closeConnection(Connection *con)
+{
+	for (std::list<Connection *>::iterator i = _connections.begin(); i != _connections.end(); i++)
+	{
+		if (*i == con)
+		{
+			delete *i;
+			_connections.erase(i);
+			return 0;
+		}
+	}
+	return -1;
 }
 
 Server::~Server(void)

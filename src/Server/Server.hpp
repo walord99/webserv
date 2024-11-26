@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 16:01:06 by bplante           #+#    #+#             */
-/*   Updated: 2024/11/15 01:26:58 by bplante          ###   ########.fr       */
+/*   Updated: 2024/11/20 14:13:04 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,7 @@ public:
 		}
 		virtual ~Server_Exception(void) throw() {}
 	};
+
+private:
+	int closeConnection(Connection *con);
 };

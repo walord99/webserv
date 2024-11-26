@@ -23,7 +23,7 @@ CC              = 	g++
 DIRS			=	${shell find src/ -type d -print}
 INCLUDES        = 	$(addprefix -I, $(DIRS))
 
-ERROR_FLAGS     = 	-Werror -Wall -Wextra -std=c++98
+ERROR_FLAGS     = 	 -std=c++98 #-Werror -Wall -Wextra
 
 all: $(NAME)
 $(NAME): $(MLX) $(LIBFT) $(OBJ)

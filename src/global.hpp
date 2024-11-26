@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 16:51:42 by bplante           #+#    #+#             */
-/*   Updated: 2024/11/04 23:15:42 by bplante          ###   ########.fr       */
+/*   Updated: 2024/11/22 16:40:33 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,5 @@
 #include "exception"
 #include "cerrno"
 
-#define RECV_BUFF_SIZE 4096 
+#define RECV_BUFF_SIZE 4000 
 #define strerror std::string(std::strerror(errno))
